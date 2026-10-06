@@ -1,7 +1,8 @@
 """
 Record preview GIFs of the mascot in each state and weather -> preview/*.gif
 
-    python tools/record_previews.py
+    python tools/record_previews.py                    # all clips
+    python tools/record_previews.py weather_thunder    # only the named clips
 
 Opens the widget (without tray icon or config saving, so a running goat is
 untouched) in a corner of the screen, forces each state/weather, and grabs
@@ -34,8 +35,10 @@ gw.load_config = lambda: {"mascot": "goat", "weather": "off",
 
 STATES = ("idle", "busy", "waiting")
 WEATHERS = ("clear", "partly", "cloudy", "rain", "snow", "fog", "thunder", "night")
+WEATHER_MASCOT = {"clear": "custom", "partly": "custom", "cloudy": "custom", "rain": "custom"}
 CLIPS = ([(f"{m}_{st}", m, st, "off") for m in ("goat", "pip", "custom") for st in STATES]
-         + [(f"weather_{w}", "goat", "busy", w) for w in WEATHERS])
+         + [(f"weather_{w}", WEATHER_MASCOT.get(w, "goat"), "busy", w) for w in WEATHERS])
+BOLT_FRAMES = (8, 30)      # lightning is random (~every 5 s); force two strikes per clip
 
 
 def backdrop(size):
@@ -64,7 +67,8 @@ def main():
     root.geometry(f"+{POS[0]}+{POS[1]}")
     bg = backdrop((g.cw, g.ch))
     key = tuple(int(gw.KEY[i:i + 2], 16) for i in (1, 3, 5))
-    clips = list(CLIPS)
+    wanted = set(sys.argv[1:])
+    clips = [c for c in CLIPS if not wanted or c[0] in wanted]
 
     def start_clip():
         if not clips:
@@ -77,6 +81,9 @@ def main():
         frames = []
 
         def grab():
+            if weather == "thunder" and len(frames) in BOLT_FRAMES:
+                g.wx_flash = 0.25
+                g.wx_bolt_x = 150 if len(frames) == BOLT_FRAMES[0] else 75
             x, y = root.winfo_rootx(), root.winfo_rooty()
             img = ImageGrab.grab(bbox=(x, y, x + g.cw, y + g.ch), all_screens=True).convert("RGB")
             mask = Image.eval(img.split()[0], lambda v: 0)
