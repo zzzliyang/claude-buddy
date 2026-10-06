@@ -40,13 +40,14 @@ Options:  python install.py --no-startup   (no auto-start at login)
           python install.py --uninstall
 
 USING YOUR OWN IMAGES
-  Right-click > "Open my images folder" (it is ~/.claude/goat/custom), add:
+  Right-click > "Open my images folder" (the custom/ folder in this repo), add:
     idle.png  or idle.gif
     busy.png  or busy.gif      (animated GIFs play at 10 frames/sec)
     waiting.png or waiting.gif
-  To carry your images to another PC, put them in this repo's custom/
-  folder: install.py copies them into ~/.claude/goat/custom (and picks
-  "My images" on a fresh install).
+  The goat reads them straight from this repo's custom/ folder (install.py
+  saves that path, and picks "My images" on a fresh install), so they
+  travel with the repo. Keep the repo where you installed it from; if you
+  move it, rerun install.py.
   Any missing state reuses another image. Then right-click >
   "Mascot: My images" (or "Reload my images" after changing files).
   Tips: about 80-120 px tall looks right. Hard-edged transparency

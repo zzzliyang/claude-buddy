@@ -336,11 +336,11 @@ class Goat:
 
     # ---------- custom images
     def load_custom(self):
-        """Load idle/busy/waiting images (.gif may be animated, .png static) from CUSTOM_DIR."""
+        """Load idle/busy/waiting images (.gif may be animated, .png static) from custom_dir."""
         self.custom = {}
         for st in ("idle", "busy", "waiting"):
             for ext in ("gif", "png"):
-                p = os.path.join(CUSTOM_DIR, f"{st}.{ext}")
+                p = os.path.join(self.custom_dir, f"{st}.{ext}")
                 if not os.path.exists(p):
                     continue
                 frames = []
@@ -411,9 +411,9 @@ class Goat:
         return out.subsample(den) if den > 1 else out
 
     def open_custom_dir(self):
-        os.makedirs(CUSTOM_DIR, exist_ok=True)
+        os.makedirs(self.custom_dir, exist_ok=True)
         try:
-            os.startfile(CUSTOM_DIR)          # Windows Explorer
+            os.startfile(self.custom_dir)     # Windows Explorer
         except Exception:
             pass
 
@@ -717,6 +717,11 @@ class Goat:
             self.menu.tk_popup(e.x_root, e.y_root)
         finally:
             self.menu.grab_release()
+
+    @property
+    def custom_dir(self):
+        # install.py points this at the repo's custom/ folder
+        return self.cfg.get("custom_dir") or CUSTOM_DIR
 
     @property
     def mascot(self):

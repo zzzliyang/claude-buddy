@@ -128,19 +128,16 @@ def install(startup=True):
     os.makedirs(GOAT_DIR, exist_ok=True)
     for name in ("goat_widget.pyw", "goat_hook.py", "goat_status.py"):
         shutil.copy2(os.path.join(HERE, name), os.path.join(GOAT_DIR, name))
-    # your own mascot images, kept in the repo's custom/ folder
-    src_custom = os.path.join(HERE, "custom")
-    imgs = [n for n in os.listdir(src_custom)
-            if n.lower().endswith((".gif", ".png"))] if os.path.isdir(src_custom) else []
-    if imgs:
-        dst_custom = os.path.join(GOAT_DIR, "custom")
-        os.makedirs(dst_custom, exist_ok=True)
-        for n in imgs:
-            shutil.copy2(os.path.join(src_custom, n), os.path.join(dst_custom, n))
-        if not os.path.exists(CONFIG_FILE):     # fresh machine: show your images
-            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
-                json.dump({"mascot": "custom"}, f)
-        print(f"  your images copied to {dst_custom}")
+    # your own mascot images live in the repo's custom/ folder; point the goat at it
+    try:
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+    except Exception:
+        cfg = {"mascot": "custom"}              # fresh machine: show your images
+    cfg["custom_dir"] = os.path.join(HERE, "custom")
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(cfg, f)
+    print(f"  your images: {cfg['custom_dir']}")
     # usage mod: gives the tooltip usage limits in the desktop app (no status line there)
     if os.path.isdir(MOD_DIR):
         shutil.rmtree(MOD_DIR)
