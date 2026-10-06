@@ -14,7 +14,7 @@ switched from the right-click menu.
 Hover over the mascot to see your usage limits (5-hour and weekly %, reset times, context
 used) and the current weather:
 
-![usage tooltip](preview/usage_tooltip.png)
+![usage tooltip](preview/usage_tooltip.png?v=2)
 
 ### Live weather
 
