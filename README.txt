@@ -44,6 +44,9 @@ USING YOUR OWN IMAGES
     idle.png  or idle.gif
     busy.png  or busy.gif      (animated GIFs play at 10 frames/sec)
     waiting.png or waiting.gif
+  To carry your images to another PC, put them in this repo's custom/
+  folder: install.py copies them into ~/.claude/goat/custom (and picks
+  "My images" on a fresh install).
   Any missing state reuses another image. Then right-click >
   "Mascot: My images" (or "Reload my images" after changing files).
   Tips: about 80-120 px tall looks right. Hard-edged transparency

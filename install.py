@@ -26,6 +26,7 @@ STARTUP_FILE = os.path.join(STARTUP_DIR, "claude_goat.vbs")
 START_MENU_LNK = os.path.join(os.environ.get("APPDATA", ""), "Microsoft", "Windows",
                               "Start Menu", "Programs", "Claude Buddy.lnk")
 ICON_FILE = os.path.join(GOAT_DIR, "goat.ico")
+CONFIG_FILE = os.path.join(GOAT_DIR, "config.json")
 MARK = "goat_hook.py"
 STATUS_MARK = "goat_status.py"
 ORIG_FILE = os.path.join(GOAT_DIR, "statusline_orig.json")
@@ -127,6 +128,19 @@ def install(startup=True):
     os.makedirs(GOAT_DIR, exist_ok=True)
     for name in ("goat_widget.pyw", "goat_hook.py", "goat_status.py"):
         shutil.copy2(os.path.join(HERE, name), os.path.join(GOAT_DIR, name))
+    # your own mascot images, kept in the repo's custom/ folder
+    src_custom = os.path.join(HERE, "custom")
+    imgs = [n for n in os.listdir(src_custom)
+            if n.lower().endswith((".gif", ".png"))] if os.path.isdir(src_custom) else []
+    if imgs:
+        dst_custom = os.path.join(GOAT_DIR, "custom")
+        os.makedirs(dst_custom, exist_ok=True)
+        for n in imgs:
+            shutil.copy2(os.path.join(src_custom, n), os.path.join(dst_custom, n))
+        if not os.path.exists(CONFIG_FILE):     # fresh machine: show your images
+            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+                json.dump({"mascot": "custom"}, f)
+        print(f"  your images copied to {dst_custom}")
     # usage mod: gives the tooltip usage limits in the desktop app (no status line there)
     if os.path.isdir(MOD_DIR):
         shutil.rmtree(MOD_DIR)
