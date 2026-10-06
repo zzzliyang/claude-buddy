@@ -7,7 +7,6 @@ switched from the right-click menu.
 | | Idle | Working | Needs you |
 |---|:---:|:---:|:---:|
 | **Goat** | ![goat idle](preview/goat_idle.gif) | ![goat busy](preview/goat_busy.gif) | ![goat waiting](preview/goat_waiting.gif) |
-| **Pip** | ![pip idle](preview/pip_idle.gif) | ![pip busy](preview/pip_busy.gif) | ![pip waiting](preview/pip_waiting.gif) |
 | **My images** | ![custom idle](preview/custom_idle.gif) | ![custom busy](preview/custom_busy.gif) | ![custom waiting](preview/custom_waiting.gif) |
 
 ### Live weather
@@ -42,8 +41,12 @@ The mascot appears bottom-right, always on top, and starts at login.
 Several Claude Code sessions at once are fine: if any is busy, the mascot works.
 
 Hover over the mascot to see your usage limits (5-hour and weekly %, reset times, context
-used). Limits come from a small Claude Code mod (`usage-mod`, works in the desktop app) and
-the status line (terminal), for Pro/Max plans, after the first reply in a session.
+used) and the current weather:
+
+![usage tooltip](preview/usage_tooltip.png)
+
+Limits come from a small Claude Code mod (`usage-mod`, works in the desktop app) and the
+status line (terminal), for Pro/Max plans, after the first reply in a session.
 
 Left-drag to move. Right-click: test states, switch mascot, weather, reset position, hide, quit.
 

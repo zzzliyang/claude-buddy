@@ -36,7 +36,7 @@ gw.load_config = lambda: {"mascot": "goat", "weather": "off",
 STATES = ("idle", "busy", "waiting")
 WEATHERS = ("clear", "partly", "cloudy", "rain", "snow", "fog", "thunder", "night")
 WEATHER_MASCOT = {"clear": "custom", "partly": "custom", "cloudy": "custom", "rain": "custom"}
-CLIPS = ([(f"{m}_{st}", m, st, "off") for m in ("goat", "pip", "custom") for st in STATES]
+CLIPS = ([(f"{m}_{st}", m, st, "off") for m in ("goat", "custom") for st in STATES]
          + [(f"weather_{w}", WEATHER_MASCOT.get(w, "goat"), "busy", w) for w in WEATHERS])
 BOLT_FRAMES = (8, 30)      # lightning is random (~every 5 s); force two strikes per clip
 
@@ -64,6 +64,8 @@ def main():
     root.tk.call("tk", "scaling", 96 / 72)          # record at 1x, whatever the DPI
     g = gw.Goat(root)
     root.attributes("-transparentcolor", "")        # grab the colour key, not the desktop
+    g.c.unbind("<Enter>")                           # no hover tooltip in the shots
+    g.c.unbind("<Leave>")
     root.geometry(f"+{POS[0]}+{POS[1]}")
     bg = backdrop((g.cw, g.ch))
     key = tuple(int(gw.KEY[i:i + 2], 16) for i in (1, 3, 5))
@@ -88,11 +90,19 @@ def main():
             img = ImageGrab.grab(bbox=(x, y, x + g.cw, y + g.ch), all_screens=True).convert("RGB")
             mask = Image.eval(img.split()[0], lambda v: 0)
             px, mp = img.load(), mask.load()
+            stray = 0
             for yy in range(img.height):
                 for xx in range(img.width):
-                    if px[xx, yy] == key:
+                    r, gg, b = px[xx, yy]
+                    if (r, gg, b) == key:
                         mp[xx, yy] = 255
-            frames.append(Image.composite(bg, img, mask))
+                    elif r > 200 and b > 200 and gg < 190:
+                        stray += 1          # colour key blended with something on top
+            # a popup or fading window over ours: skip the frame, the mascot never draws pink
+            if stray < 150:
+                frames.append(Image.composite(bg, img, mask))
+            else:
+                print(f"    dropped a frame of {name} (something covered the window)")
             if len(frames) < SECONDS * 1000 / FRAME_MS:
                 root.after(FRAME_MS, grab)
             else:
