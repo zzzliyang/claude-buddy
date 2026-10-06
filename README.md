@@ -9,13 +9,20 @@ switched from the right-click menu.
 | **Goat** | ![goat idle](preview/goat_idle.gif) | ![goat busy](preview/goat_busy.gif) | ![goat waiting](preview/goat_waiting.gif) |
 | **My images** | ![custom idle](preview/custom_idle.gif) | ![custom busy](preview/custom_busy.gif) | ![custom waiting](preview/custom_waiting.gif) |
 
+### Usage on hover
+
+Hover over the mascot to see your usage limits (5-hour and weekly %, reset times, context
+used) and the current weather:
+
+![usage tooltip](preview/usage_tooltip.png)
+
 ### Live weather
 
 The scene follows the weather where you are (or pick a test weather from the menu).
 
 | Sunny | Partly cloudy | Cloudy | Rain |
 |:---:|:---:|:---:|:---:|
-| ![sunny](preview/weather_clear.gif) | ![partly cloudy](preview/weather_partly.gif) | ![cloudy](preview/weather_cloudy.gif) | ![rain](preview/weather_rain.gif) |
+| ![sunny](preview/weather_clear.gif) | ![partly cloudy](preview/weather_partly.gif) | ![cloudy](preview/weather_cloudy.gif?v=2) | ![rain](preview/weather_rain.gif) |
 | **Snow** | **Fog** | **Thunderstorm** | **Clear night** |
 | ![snow](preview/weather_snow.gif) | ![fog](preview/weather_fog.gif) | ![thunderstorm](preview/weather_thunder.gif) | ![clear night](preview/weather_night.gif) |
 
@@ -40,12 +47,7 @@ The mascot appears bottom-right, always on top, and starts at login.
 
 Several Claude Code sessions at once are fine: if any is busy, the mascot works.
 
-Hover over the mascot to see your usage limits (5-hour and weekly %, reset times, context
-used) and the current weather:
-
-![usage tooltip](preview/usage_tooltip.png)
-
-Limits come from a small Claude Code mod (`usage-mod`, works in the desktop app) and the
+Limits in the hover tooltip come from a small Claude Code mod (`usage-mod`, works in the desktop app) and the
 status line (terminal), for Pro/Max plans, after the first reply in a session.
 
 Left-drag to move. Right-click: test states, switch mascot, weather, reset position, hide, quit.
